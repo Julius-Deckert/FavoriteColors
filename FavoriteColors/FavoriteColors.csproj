@@ -5,4 +5,34 @@
   </PropertyGroup>
 
 
+  <ItemGroup>
+    <None Remove="Controllers\" />
+    <None Remove="Domain\" />
+    <None Remove="Domain\Models\" />
+    <None Remove="Domain\Services\" />
+    <None Remove="YServices\" />
+    <None Remove="Domain\Repositories\" />
+    <None Remove="Persistence\" />
+    <None Remove="Persistence\Contexts\" />
+    <None Remove="Microsoft.EntityFrameworkCore" />
+    <None Remove="Microsoft.EntityFrameworkCore.Relational" />
+    <None Remove="Persistence\Repositories\" />
+    <None Remove="Microsoft.EntityFrameworkCore.InMemory" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Domain\" />
+    <Folder Include="Domain\Models\" />
+    <Folder Include="Domain\Services\" />
+    <Folder Include="Services\" />
+    <Folder Include="Domain\Repositories\" />
+    <Folder Include="Persistence\" />
+    <Folder Include="Persistence\Contexts\" />
+    <Folder Include="Persistence\Repositories\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.11" />
+  </ItemGroup>
 </Project>
