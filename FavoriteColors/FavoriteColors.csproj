@@ -20,7 +20,7 @@
     <None Remove="Microsoft.EntityFrameworkCore.InMemory" />
     <None Remove="Swashbuckle.AspNetCore" />
     <None Remove="Resources\" />
-    <None Remove="Extensions\" />
+    <None Remove="Domain\Services\Communication\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -33,7 +33,7 @@
     <Folder Include="Persistence\Contexts\" />
     <Folder Include="Persistence\Repositories\" />
     <Folder Include="Resources\" />
-    <Folder Include="Extensions\" />
+    <Folder Include="Domain\Services\Communication\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />

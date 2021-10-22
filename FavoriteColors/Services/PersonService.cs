@@ -19,5 +19,21 @@ namespace FavoriteColors.Services
         {
             return await personRepository.ListAsync();
         }
+
+        public async Task<SavePersonResponse> SaveAsync(Category category)
+        {
+            try
+            {
+                await _categoryRepository.AddAsync(category);
+                await _unitOfWork.CompleteAsync();
+
+                return new CategoryResponse(category);
+            }
+            catch (Exception ex)
+            {
+                // Do some logging stuff
+                return new CategoryResponse($"An error occurred when saving the category: {ex.Message}");
+            }
+        }
     }
 }
