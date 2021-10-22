@@ -18,6 +18,8 @@
     <None Remove="Microsoft.EntityFrameworkCore.Relational" />
     <None Remove="Persistence\Repositories\" />
     <None Remove="Microsoft.EntityFrameworkCore.InMemory" />
+    <None Remove="Swashbuckle.AspNetCore" />
+    <None Remove="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -29,10 +31,14 @@
     <Folder Include="Persistence\" />
     <Folder Include="Persistence\Contexts\" />
     <Folder Include="Persistence\Repositories\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.11" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 </Project>
