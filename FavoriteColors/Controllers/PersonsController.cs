@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FavoriteColors.Domain.Models;
 using FavoriteColors.Domain.Services;
+using FavoriteColors.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FavoriteColors.Controllers
