@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace FavoriteColors
 {
@@ -33,20 +34,22 @@ namespace FavoriteColors
             services.AddScoped<IPersonService, PersonService>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "FavoriteColors", Version = "v1" })
+            );
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
-            app.UseSwaggerUI();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                // Enable middleware to serve generated Swagger as a JSON endpoint.
+                app.UseSwagger();
+
+                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FavoriteColors v1"));
             }
 
             app.UseRouting();
