@@ -20,7 +20,7 @@ namespace FavoriteColors.Persistence.Contexts
             builder.Entity<Person>().Property(p => p.LastName).IsRequired();
             builder.Entity<Person>().Property(p => p.ZipCode).IsRequired();
             builder.Entity<Person>().Property(p => p.City).IsRequired();
-            builder.Entity<Person>().Property(p => p.ColorId).IsRequired();
+            builder.Entity<Person>().Property(p => p.Color).IsRequired();
 
             builder.Entity<Person>().HasData
             (
@@ -30,7 +30,6 @@ namespace FavoriteColors.Persistence.Contexts
                     LastName= "Mustermann",
                     ZipCode = 12345,
                     City = "Musterstadt",
-                    ColorId = 1,
                     Color = "blau"
                 }
             );
