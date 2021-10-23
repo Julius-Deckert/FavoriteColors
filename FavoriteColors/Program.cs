@@ -3,6 +3,11 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using CsvHelper;
+using System.IO;
+using System.Globalization;
+using FavoriteColors.Domain.Models;
+using CsvHelper.Configuration;
 
 namespace FavoriteColors
 {
@@ -12,6 +17,19 @@ namespace FavoriteColors
     {
         public static void Main(string[] args)
         {
+            using (var streamReader = new StreamReader(@"sample-input.csv"))
+            {
+                using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
+                {
+                    var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+                    {
+                        HasHeaderRecord = false
+                    };
+
+                    var records = csvReader.GetRecords<dynamic>();
+                }
+            }
+
             var host = BuildWebHost(args);
 
             using (var scope = host.Services.CreateScope())
