@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FavoriteColors.Domain.Models;
 using FavoriteColors.Domain.Repositories;
 using FavoriteColors.Domain.Services;
+using FavoriteColors.Domain.Services.Communication;
 
 namespace FavoriteColors.Services
 {
@@ -15,24 +17,23 @@ namespace FavoriteColors.Services
             this.personRepository = personRepository;
         }
 
-        public async Task<IEnumerable<Person>> ListAsync()
+        public async Task<IEnumerable<Person>> GetAsync()
         {
-            return await personRepository.ListAsync();
+            return await personRepository.GetAsync();
         }
 
-        public async Task<SavePersonResponse> SaveAsync(Category category)
+        public async Task<SavePersonResponse> CreateAsync(Person person)
         {
             try
             {
-                await _categoryRepository.AddAsync(category);
-                await _unitOfWork.CompleteAsync();
+                await personRepository.CreateAsync(person);
 
-                return new CategoryResponse(category);
+                return new SavePersonResponse(person);
             }
             catch (Exception ex)
             {
                 // Do some logging stuff
-                return new CategoryResponse($"An error occurred when saving the category: {ex.Message}");
+                return new SavePersonResponse($"An error occurred when saving the category: {ex.Message}");
             }
         }
     }

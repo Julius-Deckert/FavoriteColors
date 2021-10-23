@@ -6,6 +6,7 @@ namespace FavoriteColors.Domain.Repositories
 {
     public interface IPersonRepository
     {
-        Task<IEnumerable<Person>> ListAsync();
+        Task<IEnumerable<Person>> GetAsync();
+        Task CreateAsync(Person category);
     }
 }
