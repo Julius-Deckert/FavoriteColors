@@ -7,7 +7,7 @@ namespace FavoriteColors.Domain.Services
 {
     public interface IPersonService
     {
-        Task<IEnumerable<Person>> ListAsync();
-        Task<SavePersonResponse> SaveAsync(Person person);
+        Task<IEnumerable<Person>> GetAsync();
+        Task<SavePersonResponse> CreateAsync(Person person);
     }
 }
