@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using FavoriteColors.Domain.Models;
 using FavoriteColors.Domain.Services;
-using FavoriteColors.Extensions;
 using FavoriteColors.Resources;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,12 +11,10 @@ namespace FavoriteColors.Controllers
     public class PersonsController : Controller
     {
         private readonly IPersonService personService;
-        private readonly IMapper mapper;
 
-        public PersonsController(IPersonService personService, IMapper mapper)
+        public PersonsController(IPersonService personService)
         {
             this.personService = personService;
-            this.mapper = mapper;
         }
 
         /// <summary>
@@ -41,10 +37,9 @@ namespace FavoriteColors.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Person), 201)]
         [ProducesResponseType(typeof(ErrorResource), 400)]
-        public async Task<IActionResult> PostAsync([FromBody] SavePersonResource resource)
+        public async Task<IActionResult> PostAsync([FromBody] Person resource)
         {
-            var person = mapper.Map<SavePersonResource, Person>(resource);
-            var result = await personService.SaveAsync(person);
+            var result = await personService.SaveAsync(resource);
 
             if (!result.Success)
             {
