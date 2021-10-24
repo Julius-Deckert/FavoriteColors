@@ -17,7 +17,7 @@ namespace FavoriteColors
             // The name, lastname and city can contain multiple chars with whitespaces
             // to cover cases like double first and last names or special city names.
             // The zip code is restricted to 5 digits (german zip code) => this restiction can be removed to allow non german zip codes later on.
-            Regex regex = new Regex(@"[\w\s]+, [\w\s]+, [0-9]{5}, [\w\s]+, [0-9]{1}", RegexOptions.IgnoreCase);
+            Regex regex = new Regex(@"[a-zA-Z\s]+, [a-zA-Z\s]+, [0-9]{5}, [a-zA-Z\s]+, [0-9]{1}", RegexOptions.IgnoreCase);
 
             string[] csvLines = System.IO.File.ReadAllLines(@"sample-input.csv");
 
