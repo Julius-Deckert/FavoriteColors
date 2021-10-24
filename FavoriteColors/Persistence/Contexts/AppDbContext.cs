@@ -27,10 +27,23 @@ namespace FavoriteColors.Persistence.Contexts
                 new Person {
                     Id = 1,
                     Name = "Max",
-                    LastName= "Mustermann",
+                    LastName = "Mustermann",
                     ZipCode = 12345,
                     City = "Musterstadt",
                     Color = "blau"
+                }
+            );
+
+            builder.Entity<Person>().HasData
+            (
+                new Person
+                {
+                    Id = 2,
+                    Name = "Erika",
+                    LastName = "Musterfrau",
+                    ZipCode = 67890,
+                    City = "Musterstadt",
+                    Color = "rot"
                 }
             );
         }
