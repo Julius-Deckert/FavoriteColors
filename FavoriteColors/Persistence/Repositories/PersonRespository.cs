@@ -13,14 +13,19 @@ namespace FavoriteColors.Persistence.Repositories
         {
         }
 
-        public async Task<IEnumerable<Person>> GetAsync()
+        public async Task<IEnumerable<Person>> GetAllAsync()
         {
             return await context.Persons.ToListAsync();
         }
 
-        public async Task CreateAsync(Person category)
+        public async Task<Person> GetByIdAsync(int id)
         {
-            await context.Persons.AddAsync(category);
+            return await context.Persons.FindAsync(id);
+        }
+
+        public async Task CreateAsync(Person person)
+        {
+            await context.Persons.AddAsync(person);
         }
     }
 }

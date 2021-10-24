@@ -7,7 +7,10 @@ namespace FavoriteColors.Domain.Services
 {
     public interface IPersonService
     {
-        Task<IEnumerable<Person>> GetAsync();
+        Task<IEnumerable<Person>> GetAllAsync();
+
+        Task<Person> GetByIdAsync(int id);
+
         Task<SavePersonResponse> CreateAsync(Person person);
     }
 }

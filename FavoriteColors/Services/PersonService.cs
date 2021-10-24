@@ -17,9 +17,14 @@ namespace FavoriteColors.Services
             this.personRepository = personRepository;
         }
 
-        public async Task<IEnumerable<Person>> GetAsync()
+        public async Task<IEnumerable<Person>> GetAllAsync()
         {
-            return await personRepository.GetAsync();
+            return await personRepository.GetAllAsync();
+        }
+
+        public async Task<Person> GetByIdAsync(int id)
+        {
+            return await personRepository.GetByIdAsync(id);
         }
 
         public async Task<SavePersonResponse> CreateAsync(Person person)

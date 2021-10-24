@@ -25,8 +25,20 @@ namespace FavoriteColors.Controllers
         [ProducesResponseType(typeof(IEnumerable<Person>), 200)]
         public async Task<IEnumerable<Person>> GetAllAsync()
         {
-            var persons = await personService.GetAsync();
+            var persons = await personService.GetAllAsync();
             return persons;
+        }
+
+        /// <summary>
+        ///     Gets personal information accociated with the id.
+        /// </summary>
+        /// <param name="id">Id of the person.</param>
+        /// <returns>List os categories.</returns>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Person), 200)]
+        public async Task<Person> GetByIdAsync(int id)
+        {
+            return await personService.GetByIdAsync(id);
         }
 
         /// <summary>
