@@ -10,6 +10,8 @@ namespace FavoriteColors.Domain.Repositories
 
         Task<Person> GetByIdAsync(int id);
 
+        IEnumerable<Person> GetByColorAsync(string color);
+
         Task CreateAsync(Person person);
     }
 }

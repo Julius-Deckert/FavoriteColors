@@ -23,6 +23,21 @@ namespace FavoriteColors.Persistence.Repositories
             return await context.Persons.FindAsync(id);
         }
 
+        public IEnumerable<Person> GetByColorAsync(string color)
+        {
+            var persons = new List<Person>();
+
+            foreach (Person person in context.Persons)
+            {
+                if (person.Color == color)
+                {
+                    persons.Add(person);
+                }
+            }
+
+            return persons;
+        }
+
         public async Task CreateAsync(Person person)
         {
             await context.Persons.AddAsync(person);

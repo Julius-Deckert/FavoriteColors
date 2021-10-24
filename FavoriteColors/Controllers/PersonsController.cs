@@ -18,7 +18,7 @@ namespace FavoriteColors.Controllers
         }
 
         /// <summary>
-        ///     Lists all persons.
+        ///     Gets all persons.
         /// </summary>
         /// <returns>List os categories.</returns>
         [HttpGet]
@@ -39,6 +39,18 @@ namespace FavoriteColors.Controllers
         public async Task<Person> GetByIdAsync(int id)
         {
             return await personService.GetByIdAsync(id);
+        }
+
+        /// <summary>
+        ///     Gets all persons accociated with the color.
+        /// </summary>
+        /// <param name="id">Id of the person.</param>
+        /// <returns>List os categories.</returns>
+        [HttpGet("/color/{color}")]
+        [ProducesResponseType(typeof(Person), 200)]
+        public IEnumerable<Person> GetByColor(string color)
+        {
+            return personService.GetByColorAsync(color);
         }
 
         /// <summary>

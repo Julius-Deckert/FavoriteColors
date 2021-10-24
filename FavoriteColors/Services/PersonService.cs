@@ -27,6 +27,11 @@ namespace FavoriteColors.Services
             return await personRepository.GetByIdAsync(id);
         }
 
+        public IEnumerable<Person> GetByColorAsync(string color)
+        {
+            return personRepository.GetByColorAsync(color);
+        }
+
         public async Task<SavePersonResponse> CreateAsync(Person person)
         {
             try
