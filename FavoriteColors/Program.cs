@@ -1,13 +1,10 @@
-﻿using FavoriteColors.Persistence.Contexts;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using FavoriteColors.Persistence.Contexts;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using CsvHelper;
-using System.IO;
-using System.Globalization;
-using FavoriteColors.Domain.Models;
-using CsvHelper.Configuration;
 
 namespace FavoriteColors
 {
@@ -17,18 +14,35 @@ namespace FavoriteColors
     {
         public static void Main(string[] args)
         {
-            using (var streamReader = new StreamReader(@"sample-input.csv"))
-            {
-                using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
-                {
-                    var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
-                    {
-                        HasHeaderRecord = false
-                    };
+            // The name, lastname and city can contain multiple chars with whitespaces
+            // to cover cases like double first and last names or special city names.
+            // The zip code is restricted to 5 digits (german zip code) => this restiction can be removed to allow non german zip codes later on.
+            Regex regex = new Regex(@"[\w\s]+, [\w\s]+, [0-9]{5}, [\w\s]+, [0-9]{1}", RegexOptions.IgnoreCase);
 
-                    var records = csvReader.GetRecords<dynamic>();
+            string[] csvLines = System.IO.File.ReadAllLines(@"sample-input.csv");
+
+            var persons = new List<string>();
+
+            int Id = 0;
+
+            for (int i = 0; i < csvLines.Length; i++)
+            {
+                var row = csvLines[i];
+
+                // Add comma between zip code and city to match person properties
+                row = Regex.Replace(row, "[0-9]{5}", "$0,");
+
+                if (!regex.IsMatch(row))
+                {
+                    continue;
                 }
+
+                row = Id + 1 + ", " + row;
+                Id++;
+                persons.Add(row);
             }
+
+            persons.Insert(0, "Id, LastName, Name, ZipCode, City, Color");
 
             var host = BuildWebHost(args);
 
