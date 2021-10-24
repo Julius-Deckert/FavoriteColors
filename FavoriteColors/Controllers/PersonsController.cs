@@ -25,12 +25,12 @@ namespace FavoriteColors.Controllers
         [ProducesResponseType(typeof(IEnumerable<Person>), 200)]
         public async Task<IEnumerable<Person>> GetAllAsync()
         {
-            var persons = await personService.ListAsync();
+            var persons = await personService.GetAsync();
             return persons;
         }
 
         /// <summary>
-        ///     Saves a new person.
+        ///     Create a new person.
         /// </summary>
         /// <param name="resource">Data of new person.</param>
         /// <returns>Response for the request.</returns>
@@ -39,7 +39,7 @@ namespace FavoriteColors.Controllers
         [ProducesResponseType(typeof(ErrorResource), 400)]
         public async Task<IActionResult> PostAsync([FromBody] Person resource)
         {
-            var result = await personService.SaveAsync(resource);
+            var result = await personService.CreateAsync(resource);
 
             if (!result.Success)
             {
