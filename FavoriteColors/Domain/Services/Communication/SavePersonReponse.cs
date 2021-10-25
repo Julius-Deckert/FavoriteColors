@@ -15,7 +15,7 @@ namespace FavoriteColors.Domain.Services.Communication
         /// <summary>
         ///     Creates a success response.
         /// </summary>
-        /// <param name="category">Saved category.</param>
+        /// <param name="person">Saved person.</param>
         /// <returns>Response.</returns>
         public SavePersonResponse(Person person) : this(true, string.Empty, person){ }
 
