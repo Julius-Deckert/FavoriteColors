@@ -74,7 +74,7 @@ namespace FavoriteColors.Persistence.Contexts
                 }
 
                 //add corresponding id to person
-                row = Id + 1 + ", " + row;
+                row = Id + 1 + "," + row;
                 Id++;
 
                 //remove whitespaces after comma
