@@ -36,9 +36,17 @@ namespace FavoriteColors.Controllers
         /// <returns>List os categories.</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Person), 200)]
-        public async Task<Person> GetByIdAsync(int id)
+        [ProducesResponseType(typeof(Person), 404)]
+        public async Task<ActionResult<Person>> GetByIdAsync(int id)
         {
-            return await personService.GetByIdAsync(id);
+            var person = await personService.GetByIdAsync(id);
+
+            if (person is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(person);
         }
 
         /// <summary>
@@ -48,9 +56,17 @@ namespace FavoriteColors.Controllers
         /// <returns>List os categories.</returns>
         [HttpGet("/color/{color}")]
         [ProducesResponseType(typeof(Person), 200)]
-        public IEnumerable<Person> GetByColor(string color)
+        [ProducesResponseType(typeof(Person), 404)]
+        public async Task<ActionResult<IEnumerable<Person>>> GetByColor(string color)
         {
-            return personService.GetByColorAsync(color);
+            var persons = await personService.GetByColorAsync(color);
+
+            if (persons is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(persons);
         }
 
         /// <summary>

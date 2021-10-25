@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FavoriteColors.Domain.Models;
 using FavoriteColors.Domain.Services.Communication;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FavoriteColors.Domain.Services
 {
@@ -11,7 +12,7 @@ namespace FavoriteColors.Domain.Services
 
         Task<Person> GetByIdAsync(int id);
 
-        IEnumerable<Person> GetByColorAsync(string color);
+        Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(string color);
 
         Task<SavePersonResponse> CreateAsync(Person person);
     }

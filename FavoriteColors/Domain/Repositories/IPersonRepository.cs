@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FavoriteColors.Domain.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FavoriteColors.Domain.Repositories
 {
@@ -10,7 +11,7 @@ namespace FavoriteColors.Domain.Repositories
 
         Task<Person> GetByIdAsync(int id);
 
-        IEnumerable<Person> GetByColorAsync(string color);
+        Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(string color);
 
         Task CreateAsync(Person person);
     }

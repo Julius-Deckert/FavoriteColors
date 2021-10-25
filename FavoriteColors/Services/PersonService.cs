@@ -5,6 +5,7 @@ using FavoriteColors.Domain.Models;
 using FavoriteColors.Domain.Repositories;
 using FavoriteColors.Domain.Services;
 using FavoriteColors.Domain.Services.Communication;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FavoriteColors.Services
 {
@@ -27,7 +28,7 @@ namespace FavoriteColors.Services
             return await personRepository.GetByIdAsync(id);
         }
 
-        public IEnumerable<Person> GetByColorAsync(string color)
+        public Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(string color)
         {
             return personRepository.GetByColorAsync(color);
         }
