@@ -7,6 +7,13 @@ namespace FavoriteColors.Persistence.Contexts
 {
     public class AppDbContext : DbContext
     {
+        /*
+         * The name, lastname and city can contain multiple chars with whitespaces
+         * to cover cases like double first and last names or special city names.
+         * The zip code is restricted to 5 digits (german zip code) => this restiction can be removed to allow non german zip codes later on.
+         */
+        Regex regex = new Regex(@"[a-zA-Z\s]+, [a-zA-Z\s]+, [0-9]{5}, [a-zA-Z\s]+, [0-9]{1}", RegexOptions.IgnoreCase);
+
         public DbSet<Person> Persons { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
@@ -24,40 +31,16 @@ namespace FavoriteColors.Persistence.Contexts
             builder.Entity<Person>().Property(p => p.City).IsRequired();
             builder.Entity<Person>().Property(p => p.Color).IsRequired();
 
-            //builder.Entity<Person>().HasData
-            //(
-            //    new Person
-            //    {
-            //        Id = 1,
-            //        Name = "Max",
-            //        LastName = "Mustermann",
-            //        ZipCode = 12345,
-            //        City = "Musterstadt",
-            //        Color = "blau"
-            //    }
-            //);
+            var fileData = ReadCsvFile(@"sample-input.csv", regex);
 
-            //builder.Entity<Person>().HasData
-            //(
-            //    new Person
-            //    {
-            //        Id = 2,
-            //        Name = "Erika",
-            //        LastName = "Musterfrau",
-            //        ZipCode = 67890,
-            //        City = "Musterstadt",
-            //        Color = "rot"
-            //    }
-            //);
+            CreateEntitiesFromFileData(fileData, builder);
+        }
 
-            // The name, lastname and city can contain multiple chars with whitespaces
-            // to cover cases like double first and last names or special city names.
-            // The zip code is restricted to 5 digits (german zip code) => this restiction can be removed to allow non german zip codes later on.
-            Regex regex = new Regex(@"[a-zA-Z\s]+, [a-zA-Z\s]+, [0-9]{5}, [a-zA-Z\s]+, [0-9]{1}", RegexOptions.IgnoreCase);
-
-            string[] csvLines = System.IO.File.ReadAllLines(@"sample-input.csv");
-
+        private string[] ReadCsvFile(string filePath, Regex regex)
+        {
             var personsList = new List<string>();
+
+            string[] csvLines = System.IO.File.ReadAllLines(filePath);
 
             int Id = 0;
 
@@ -68,6 +51,10 @@ namespace FavoriteColors.Persistence.Contexts
                 // Add comma between zip code and city to match person properties
                 row = Regex.Replace(row, "[0-9]{5}", "$0,");
 
+                /* 
+                 * If the row does not match the regex its invalid
+                 * and therefore not considered for further processing.
+                 */
                 if (!regex.IsMatch(row))
                 {
                     continue;
@@ -83,13 +70,16 @@ namespace FavoriteColors.Persistence.Contexts
                 personsList.Add(row);
             }
 
-            var personsArray = personsList.ToArray();
+            return personsList.ToArray();
+        }
 
-            for (int i = 0; i < personsArray.Length; i++)
+        private void CreateEntitiesFromFileData(string[] fileData, ModelBuilder builder)
+        {
+            for (int i = 0; i < fileData.Length; i++)
             {
                 builder.Entity<Person>().HasData
                 (
-                    new Person(personsArray[i])
+                    new Person(fileData[i])
                 );
             }
         }
