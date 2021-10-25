@@ -28,7 +28,7 @@ namespace FavoriteColors.Services
             return await personRepository.GetByIdAsync(id);
         }
 
-        public Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(string color)
+        public Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(ColorEnum color)
         {
             return personRepository.GetByColorAsync(color);
         }
@@ -44,7 +44,7 @@ namespace FavoriteColors.Services
             catch (Exception ex)
             {
                 // Do some logging stuff
-                return new SavePersonResponse($"An error occurred when saving the category: {ex.Message}");
+                return new SavePersonResponse($"An error occurred when saving the person: {ex.Message}");
             }
         }
     }

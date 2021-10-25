@@ -11,7 +11,7 @@ namespace FavoriteColors.Domain.Repositories
 
         Task<Person> GetByIdAsync(int id);
 
-        Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(string color);
+        Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(ColorEnum color);
 
         Task CreateAsync(Person person);
     }

@@ -12,7 +12,7 @@ namespace FavoriteColors.Domain.Services
 
         Task<Person> GetByIdAsync(int id);
 
-        Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(string color);
+        Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(ColorEnum color);
 
         Task<SavePersonResponse> CreateAsync(Person person);
     }

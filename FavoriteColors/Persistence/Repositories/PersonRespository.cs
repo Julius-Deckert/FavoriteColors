@@ -3,13 +3,14 @@ using System.Threading.Tasks;
 using FavoriteColors.Domain.Models;
 using FavoriteColors.Domain.Repositories;
 using FavoriteColors.Persistence.Contexts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FavoriteColors.Persistence.Repositories
 {
-    public class PersonRespository : BaseRepository, IPersonRepository
+    public class PersonRepository : BaseRepository, IPersonRepository
     {
-        public PersonRespository(AppDbContext context) : base(context)
+        public PersonRepository(AppDbContext context) : base(context)
         {
         }
 
@@ -23,19 +24,19 @@ namespace FavoriteColors.Persistence.Repositories
             return await context.Persons.FindAsync(id);
         }
 
-        public IEnumerable<Person> GetByColorAsync(string color)
+        public async Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(ColorEnum color)
         {
             var persons = new List<Person>();
 
             foreach (Person person in context.Persons)
             {
-                if (person.Color == color)
+                if (person.Color == color.ToString())
                 {
                     persons.Add(person);
                 }
             }
 
-            return persons;
+            return await Task.FromResult(persons);
         }
 
         public async Task CreateAsync(Person person)
