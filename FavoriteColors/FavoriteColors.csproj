@@ -27,6 +27,6 @@
     <PackageReference Include="FastMember" Version="1.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Persistence\Context\" />
+    <Folder Include="Persistence\Contexts\" />
   </ItemGroup>
 </Project>
