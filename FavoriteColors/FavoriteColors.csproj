@@ -6,36 +6,15 @@
 
 
   <ItemGroup>
-    <None Remove="Controllers\" />
     <None Remove="Domain\" />
-    <None Remove="Domain\Models\" />
-    <None Remove="Domain\Services\" />
     <None Remove="YServices\" />
-    <None Remove="Domain\Repositories\" />
     <None Remove="Persistence\" />
-    <None Remove="Persistence\Contexts\" />
     <None Remove="Microsoft.EntityFrameworkCore" />
     <None Remove="Microsoft.EntityFrameworkCore.Relational" />
-    <None Remove="Persistence\Repositories\" />
     <None Remove="Microsoft.EntityFrameworkCore.InMemory" />
     <None Remove="Swashbuckle.AspNetCore" />
-    <None Remove="Resources\" />
-    <None Remove="Domain\Services\Communication\" />
     <None Remove="FastMember" />
-    <None Remove=".gitignore" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Domain\" />
-    <Folder Include="Domain\Models\" />
-    <Folder Include="Domain\Services\" />
-    <Folder Include="Services\" />
-    <Folder Include="Domain\Repositories\" />
-    <Folder Include="Persistence\" />
-    <Folder Include="Persistence\Contexts\" />
-    <Folder Include="Persistence\Repositories\" />
-    <Folder Include="Resources\" />
-    <Folder Include="Domain\Services\Communication\" />
+    <None Remove="Persistence\Context\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
@@ -48,6 +27,6 @@
     <PackageReference Include="FastMember" Version="1.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include=".gitignore" />
+    <Folder Include="Persistence\Context\" />
   </ItemGroup>
 </Project>

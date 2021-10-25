@@ -1,23 +1,19 @@
-﻿<Properties StartupConfiguration="{1375A754-8019-4583-AEFA-84E6B5E7DD2F}|Default">
-  <MonoDevelop.Ide.Workbench>
+﻿<Properties StartupConfiguration="{A2A322A6-E272-453C-9564-E6DF1FEA02AD}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="FavoriteColors/Persistence/Context/AppDbContext.cs">
     <Files>
-      <File FileName="FavoriteColors/Mapping/ModelToResourceProfile.cs" Line="10" Column="10" />
-      <File FileName="FavoriteColors/Domain/Services/IColorService.cs" Line="1" Column="1" />
-      <File FileName="FavoriteColors/Resources/ErrorResource.cs" Line="8" Column="1" />
-      <File FileName="FavoriteColors/Domain/Services/Communication/SaveCategoryReponse.cs" Line="14" Column="1" />
-      <File FileName="FavoriteColors/Controllers/PersonsController.cs" Line="28" Column="1" />
+      <File FileName="FavoriteColors/Persistence/Context/AppDbContext.cs" Line="8" Column="42" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="FavoriteColors" expanded="True">
-            <Node name="FavoriteColors" expanded="True" selected="True">
-              <Node name="Controllers" expanded="True" />
-              <Node name="Domain" expanded="True">
-                <Node name="Services" expanded="True" />
+            <Node name="FavoriteColors" expanded="True">
+              <Node name="Persistence" expanded="True">
+                <Node name="Context" selected="True" />
               </Node>
-              <Node name="Resources" expanded="True" />
-              <Node name="Services" expanded="True" />
+            </Node>
+            <Node name="FavoriteColors.UnitTests" expanded="True">
+              <Node name="Dependencies" expanded="True" />
             </Node>
           </Node>
         </State>
@@ -28,7 +24,9 @@
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/Julius/Desktop/FavoriteColors/Persistence/Contexts/AppDbContext.cs" relfile="Persistence/Contexts/AppDbContext.cs" line="73" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>
