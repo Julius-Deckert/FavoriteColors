@@ -30,7 +30,7 @@ namespace FavoriteColors
                 options.UseInMemoryDatabase("favoriecolors-in-memory");
             });
 
-            services.AddScoped<IPersonRepository, PersonRespository>();
+            services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IPersonService, PersonService>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
