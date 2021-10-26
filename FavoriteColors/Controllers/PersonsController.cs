@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FavoriteColors.Domain.Models;
-using FavoriteColors.Domain.Services;
+using FavoriteColors.Domain.Repositories;
 using FavoriteColors.Domain.Services.Communication;
+using FavoriteColors.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FavoriteColors.Controllers
@@ -10,11 +12,11 @@ namespace FavoriteColors.Controllers
     [Route("/api/persons")]
     public class PersonsController : Controller
     {
-        private readonly IPersonService _personService;
+        private readonly IPersonRepository _personRepository;
 
-        public PersonsController(IPersonService personService)
+        public PersonsController(IPersonRepository personRepository)
         {
-            _personService = personService;
+            _personRepository = personRepository;
         }
 
         /// <summary>
@@ -23,9 +25,10 @@ namespace FavoriteColors.Controllers
         /// <returns>List of persons.</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Person>), 200)]
-        public async Task<IEnumerable<Person>> GetAllAsync()
+        public async Task<IEnumerable<PersonDto>> GetAllAsync()
         {
-            var persons = await _personService.GetAllAsync();
+            var persons = (await _personRepository.GetAllAsync())
+                            .Select(person => person.AsDto());
             return persons;
         }
 
@@ -37,16 +40,16 @@ namespace FavoriteColors.Controllers
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(Person), 200)]
         [ProducesResponseType(typeof(Person), 404)]
-        public async Task<ActionResult<Person>> GetByIdAsync(int id)
+        public async Task<ActionResult<PersonDto>> GetByIdAsync(int id)
         {
-            var person = await _personService.GetByIdAsync(id);
+            var person = await _personRepository.GetByIdAsync(id);
 
             if (person is null)
             {
                 return NotFound();
             }
 
-            return Ok(person);
+            return Ok(person.AsDto());
         }
 
         /// <summary>
@@ -57,9 +60,9 @@ namespace FavoriteColors.Controllers
         [HttpGet("/color/{color}")]
         [ProducesResponseType(typeof(Person), 200)]
         [ProducesResponseType(typeof(Person), 404)]
-        public async Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(Color color)
+        public async Task<ActionResult<IEnumerable<PersonDto>>> GetByColorAsync(Color color)
         {
-            var persons = await _personService.GetByColorAsync(color);
+            var persons = await _personRepository.GetByColorAsync(color);
 
             if (persons is null)
             {
@@ -77,16 +80,28 @@ namespace FavoriteColors.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Person), 201)]
         [ProducesResponseType(typeof(BaseResponse), 400)]
-        public async Task<IActionResult> PostAsync(Person person)
+        public async Task<ActionResult<PersonDto>> CreatePersonAsync(CreatePersonDto personDto)
         {
-            var result = await _personService.CreateAsync(person);
-
-            if (!result.Success)
+            Person person = new()
             {
-                return BadRequest(result.Message);
-            }
+                Id = personDto.Id,
+                LastName = personDto.LastName,
+                Name = personDto.Name,
+                ZipCode = personDto.ZipCode,
+                City = personDto.City,
+                Color = personDto.Color
+            };
 
-            return Ok(result);
+            await _personRepository.CreateAsync(person);
+
+            //if (!result.Success)
+            //{
+            //    return BadRequest(result.Message);
+            //}
+
+            return CreatedAtAction(nameof(GetByIdAsync), new { id = person.Id }, person.AsDto());
+
+            //return Ok(result);
         }
     }
 }

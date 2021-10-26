@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using FavoriteColors.Domain.Models;
 using FavoriteColors.Domain.Repositories;
 using FavoriteColors.Persistence.Contexts;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FavoriteColors.Persistence.Repositories
@@ -12,10 +11,6 @@ namespace FavoriteColors.Persistence.Repositories
     public class PersonRepository : BaseRepository, IPersonRepository
     {
         public PersonRepository(AppDbContext context) : base(context)
-        {
-        }
-
-        public PersonRepository()
         {
         }
 
@@ -29,7 +24,7 @@ namespace FavoriteColors.Persistence.Repositories
             return await Context.Persons.FindAsync(id);
         }
 
-        public async Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(Color color)
+        public async Task<IEnumerable<Person>> GetByColorAsync(Color color)
         {
             var persons = Context.Persons
                 .Where(person => person.Color == color.ToString()).ToList();
