@@ -12,7 +12,7 @@ namespace FavoriteColors.Persistence.Contexts
          * to cover cases like double first and last names or special city names.
          * The zip code is restricted to 5 digits (german zip code) => this restriction can be removed to allow non german zip codes later on.
          */
-        Regex regex = new Regex(@"[a-zA-Z\s]+, [a-zA-Z\s]+, [0-9]{5}, [a-zA-Z\s]+, [0-9]{1}", RegexOptions.IgnoreCase);
+        private readonly Regex _regex = new Regex(@"[a-zA-Z\s]+, [a-zA-Z\s]+, [0-9]{5}, [a-zA-Z\s]+, [0-9]{1}", RegexOptions.IgnoreCase);
 
         public DbSet<Person> Persons { get; set; }
 
@@ -31,12 +31,12 @@ namespace FavoriteColors.Persistence.Contexts
             builder.Entity<Person>().Property(p => p.City).IsRequired();
             builder.Entity<Person>().Property(p => p.Color).IsRequired();
 
-            var fileData = ReadCsvFile(@"sample-input.csv", regex);
+            var fileData = ReadCsvFile(@"sample-input.csv", _regex);
 
             CreateEntitiesFromFileData(fileData, builder);
         }
 
-        private string[] ReadCsvFile(string filePath, Regex regex)
+        private static IEnumerable<string> ReadCsvFile(string filePath, Regex regex)
         {
             var personsList = new List<string>();
 
