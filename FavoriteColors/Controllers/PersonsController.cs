@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FavoriteColors.Domain.Models;
@@ -29,6 +30,7 @@ namespace FavoriteColors.Controllers
         {
             var persons = (await _personRepository.GetAllAsync())
                             .Select(person => person.AsDto());
+
             return persons;
         }
 
@@ -94,14 +96,7 @@ namespace FavoriteColors.Controllers
 
             await _personRepository.CreateAsync(person);
 
-            //if (!result.Success)
-            //{
-            //    return BadRequest(result.Message);
-            //}
-
             return CreatedAtAction(nameof(GetByIdAsync), new { id = person.Id }, person.AsDto());
-
-            //return Ok(result);
         }
     }
 }

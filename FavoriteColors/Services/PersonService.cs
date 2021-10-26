@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FavoriteColors.Domain.Models;
 using FavoriteColors.Domain.Repositories;
 using FavoriteColors.Domain.Services;
-using FavoriteColors.Domain.Services.Communication;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FavoriteColors.Services
 {
     public class PersonService : IPersonService
     {
         private readonly IPersonRepository _personRepository;
+        private readonly List<Person> persons = new();
 
         public PersonService(IPersonRepository personRepository)
         {
@@ -20,32 +19,24 @@ namespace FavoriteColors.Services
 
         public async Task<IEnumerable<Person>> GetAllAsync()
         {
-            return await _personRepository.GetAllAsync();
+            return await Task.FromResult(persons);
         }
 
         public async Task<Person> GetByIdAsync(int id)
         {
-            return await _personRepository.GetByIdAsync(id);
+            var person = persons.Where(item => item.Id == id).SingleOrDefault();
+            return await Task.FromResult(person);
         }
 
-        public Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(Color color)
+        public async Task<IEnumerable<Person>> GetByColorAsync(Color color)
         {
-            return _personRepository.GetByColorAsync(color);
+            return await _personRepository.GetByColorAsync(color);
         }
 
-        public async Task<SavePersonResponse> CreateAsync(Person person)
+        public async Task CreateAsync(Person person)
         {
-            try
-            {
-                await _personRepository.CreateAsync(person);
-
-                return new SavePersonResponse(person);
-            }
-            catch (Exception ex)
-            {
-                // Do some logging stuff
-                return new SavePersonResponse($"An error occurred when saving the person: {ex.Message}");
-            }
+            persons.Add(person);
+            await Task.CompletedTask;
         }
     }
 }

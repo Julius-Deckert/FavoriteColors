@@ -10,7 +10,13 @@ namespace FavoriteColors.Persistence.Repositories
 {
     public class PersonRepository : BaseRepository, IPersonRepository
     {
+        private List<Person> persons = new();
+
         public PersonRepository(AppDbContext context) : base(context)
+        {
+        }
+
+        public PersonRepository()
         {
         }
 
