@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using FavoriteColors.Domain.Models;
 using FavoriteColors.Domain.Services;
-using FavoriteColors.Resources;
+using FavoriteColors.Domain.Services.Communication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FavoriteColors.Controllers
@@ -76,14 +76,14 @@ namespace FavoriteColors.Controllers
         /// <returns>Response for the request.</returns>
         [HttpPost]
         [ProducesResponseType(typeof(Person), 201)]
-        [ProducesResponseType(typeof(ErrorResource), 400)]
+        [ProducesResponseType(typeof(BaseResponse), 400)]
         public async Task<IActionResult> PostAsync(Person person)
         {
             var result = await _personService.CreateAsync(person);
 
             if (!result.Success)
             {
-                return BadRequest(new ErrorResource(result.Message));
+                return BadRequest(result.Message);
             }
 
             return Ok(result);
