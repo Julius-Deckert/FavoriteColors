@@ -15,11 +15,8 @@ namespace FavoriteColors
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
-
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -27,7 +24,7 @@ namespace FavoriteColors
             services.AddControllers();
 
             services.AddDbContext<AppDbContext>(options => {
-                options.UseInMemoryDatabase("favoriecolors-in-memory");
+                options.UseInMemoryDatabase("favoritecolors-in-memory");
             });
 
             services.AddScoped<IPersonRepository, PersonRepository>();
