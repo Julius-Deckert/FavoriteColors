@@ -10,11 +10,11 @@ namespace FavoriteColors.Controllers
     [Route("/api/persons")]
     public class PersonsController : Controller
     {
-        private readonly IPersonService personService;
+        private readonly IPersonService _personService;
 
         public PersonsController(IPersonService personService)
         {
-            this.personService = personService;
+            _personService = personService;
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace FavoriteColors.Controllers
         [ProducesResponseType(typeof(IEnumerable<Person>), 200)]
         public async Task<IEnumerable<Person>> GetAllAsync()
         {
-            var persons = await personService.GetAllAsync();
+            var persons = await _personService.GetAllAsync();
             return persons;
         }
 
@@ -39,7 +39,7 @@ namespace FavoriteColors.Controllers
         [ProducesResponseType(typeof(Person), 404)]
         public async Task<ActionResult<Person>> GetByIdAsync(int id)
         {
-            var person = await personService.GetByIdAsync(id);
+            var person = await _personService.GetByIdAsync(id);
 
             if (person is null)
             {
@@ -59,7 +59,7 @@ namespace FavoriteColors.Controllers
         [ProducesResponseType(typeof(Person), 404)]
         public async Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(Color color)
         {
-            var persons = await personService.GetByColorAsync(color);
+            var persons = await _personService.GetByColorAsync(color);
 
             if (persons is null)
             {
@@ -79,7 +79,7 @@ namespace FavoriteColors.Controllers
         [ProducesResponseType(typeof(ErrorResource), 400)]
         public async Task<IActionResult> PostAsync(Person person)
         {
-            var result = await personService.CreateAsync(person);
+            var result = await _personService.CreateAsync(person);
 
             if (!result.Success)
             {

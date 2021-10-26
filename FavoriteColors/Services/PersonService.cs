@@ -11,33 +11,33 @@ namespace FavoriteColors.Services
 {
     public class PersonService : IPersonService
     {
-        private readonly IPersonRepository personRepository;
+        private readonly IPersonRepository _personRepository;
 
         public PersonService(IPersonRepository personRepository)
         {
-            this.personRepository = personRepository;
+            _personRepository = personRepository;
         }
 
         public async Task<IEnumerable<Person>> GetAllAsync()
         {
-            return await personRepository.GetAllAsync();
+            return await _personRepository.GetAllAsync();
         }
 
         public async Task<Person> GetByIdAsync(int id)
         {
-            return await personRepository.GetByIdAsync(id);
+            return await _personRepository.GetByIdAsync(id);
         }
 
         public Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(Color color)
         {
-            return personRepository.GetByColorAsync(color);
+            return _personRepository.GetByColorAsync(color);
         }
 
         public async Task<SavePersonResponse> CreateAsync(Person person)
         {
             try
             {
-                await personRepository.CreateAsync(person);
+                await _personRepository.CreateAsync(person);
 
                 return new SavePersonResponse(person);
             }
