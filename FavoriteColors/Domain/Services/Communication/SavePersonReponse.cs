@@ -1,5 +1,4 @@
-﻿using System;
-using FavoriteColors.Domain.Models;
+﻿using FavoriteColors.Domain.Models;
 
 namespace FavoriteColors.Domain.Services.Communication
 {

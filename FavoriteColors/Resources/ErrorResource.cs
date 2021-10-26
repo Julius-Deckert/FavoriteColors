@@ -4,7 +4,7 @@ namespace FavoriteColors.Resources
 {
     public class ErrorResource
     {
-        public List<string> Messages { get; private set; }
+        private List<string> Messages { get; }
 
         public ErrorResource(List<string> messages)
         {

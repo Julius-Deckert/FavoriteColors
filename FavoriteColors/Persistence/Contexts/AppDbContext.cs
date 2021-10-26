@@ -10,7 +10,7 @@ namespace FavoriteColors.Persistence.Contexts
         /*
          * The name, lastname and city can contain multiple chars with whitespaces
          * to cover cases like double first and last names or special city names.
-         * The zip code is restricted to 5 digits (german zip code) => this restiction can be removed to allow non german zip codes later on.
+         * The zip code is restricted to 5 digits (german zip code) => this restriction can be removed to allow non german zip codes later on.
          */
         Regex regex = new Regex(@"[a-zA-Z\s]+, [a-zA-Z\s]+, [0-9]{5}, [a-zA-Z\s]+, [0-9]{1}", RegexOptions.IgnoreCase);
 
@@ -40,13 +40,13 @@ namespace FavoriteColors.Persistence.Contexts
         {
             var personsList = new List<string>();
 
-            string[] csvLines = System.IO.File.ReadAllLines(filePath);
+            var csvLines = System.IO.File.ReadAllLines(filePath);
 
-            int Id = 0;
+            var id = 0;
 
-            for (int i = 0; i < csvLines.Length; i++)
+            foreach (var line in csvLines)
             {
-                var row = csvLines[i];
+                var row = line;
 
                 // Add comma between zip code and city to match person properties
                 row = Regex.Replace(row, "[0-9]{5}", "$0,");
@@ -61,8 +61,8 @@ namespace FavoriteColors.Persistence.Contexts
                 }
 
                 //add corresponding id to person
-                row = Id + 1 + "," + row;
-                Id++;
+                row = id + 1 + "," + row;
+                id++;
 
                 //remove whitespaces after comma
                 row = Regex.Replace(row, " *, *", ",");
@@ -73,13 +73,13 @@ namespace FavoriteColors.Persistence.Contexts
             return personsList.ToArray();
         }
 
-        private void CreateEntitiesFromFileData(string[] fileData, ModelBuilder builder)
+        private static void CreateEntitiesFromFileData(IEnumerable<string> fileData, ModelBuilder builder)
         {
-            for (int i = 0; i < fileData.Length; i++)
+            foreach (var row in fileData)
             {
                 builder.Entity<Person>().HasData
                 (
-                    new Person(fileData[i])
+                    new Person(row)
                 );
             }
         }

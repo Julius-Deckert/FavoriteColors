@@ -30,11 +30,11 @@ namespace FavoriteColors.Controllers
         }
 
         /// <summary>
-        ///     Gets personal information accociated with the id.
+        ///     Gets personal information associated with the id.
         /// </summary>
         /// <param name="id">Id of the person.</param>
         /// <returns>A specific person.</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(Person), 200)]
         [ProducesResponseType(typeof(Person), 404)]
         public async Task<ActionResult<Person>> GetByIdAsync(int id)
@@ -50,7 +50,7 @@ namespace FavoriteColors.Controllers
         }
 
         /// <summary>
-        ///     Gets all persons accociated with the color.
+        ///     Gets all persons associated with the color.
         /// </summary>
         /// <param name="color">The favorite color of the persons.</param>
         /// <returns>List of persons.</returns>

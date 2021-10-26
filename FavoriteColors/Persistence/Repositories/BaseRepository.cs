@@ -4,11 +4,11 @@ namespace FavoriteColors.Persistence.Repositories
 {
     public abstract class BaseRepository
     {
-        protected readonly AppDbContext context;
+        protected readonly AppDbContext Context;
 
-        public BaseRepository(AppDbContext context)
+        protected BaseRepository(AppDbContext context)
         {
-            this.context = context;
+            Context = context;
         }
     }
 }

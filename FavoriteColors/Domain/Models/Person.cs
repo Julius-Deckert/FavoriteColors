@@ -11,9 +11,9 @@ namespace FavoriteColors.Domain.Models
 
         public Person(string rawData)
         {
-            string[] data = rawData.Split(",");
+            var data = rawData.Split(",");
 
-            //Parse personal infomation into properties
+            //Parse personal information into properties
             Id = Convert.ToInt32(data[0]);
             LastName = data[1];
             Name = data[2];

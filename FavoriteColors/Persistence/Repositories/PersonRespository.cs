@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FavoriteColors.Domain.Models;
 using FavoriteColors.Domain.Repositories;
@@ -16,32 +17,25 @@ namespace FavoriteColors.Persistence.Repositories
 
         public async Task<IEnumerable<Person>> GetAllAsync()
         {
-            return await context.Persons.ToListAsync();
+            return await Context.Persons.ToListAsync();
         }
 
         public async Task<Person> GetByIdAsync(int id)
         {
-            return await context.Persons.FindAsync(id);
+            return await Context.Persons.FindAsync(id);
         }
 
         public async Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(Color color)
         {
-            var persons = new List<Person>();
-
-            foreach (Person person in context.Persons)
-            {
-                if (person.Color == color.ToString())
-                {
-                    persons.Add(person);
-                }
-            }
+            var persons = Context.Persons
+                .Where(person => person.Color == color.ToString()).ToList();
 
             return await Task.FromResult(persons);
         }
 
         public async Task CreateAsync(Person person)
         {
-            await context.Persons.AddAsync(person);
+            await Context.Persons.AddAsync(person);
         }
     }
 }
