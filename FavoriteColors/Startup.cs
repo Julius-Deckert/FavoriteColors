@@ -6,7 +6,6 @@ using FavoriteColors.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
@@ -15,12 +14,10 @@ namespace FavoriteColors
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-        }
-
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IPersonService, PersonService>();
+
             services.AddControllers();
 
             services.AddDbContext<AppDbContext>(options => {
