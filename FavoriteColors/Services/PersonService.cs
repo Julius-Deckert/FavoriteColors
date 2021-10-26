@@ -28,7 +28,7 @@ namespace FavoriteColors.Services
             return await personRepository.GetByIdAsync(id);
         }
 
-        public Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(ColorEnum color)
+        public Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(Color color)
         {
             return personRepository.GetByColorAsync(color);
         }

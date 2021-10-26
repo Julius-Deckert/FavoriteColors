@@ -1,6 +1,6 @@
 ﻿namespace FavoriteColors.Domain.Models
 {
-    public enum ColorEnum
+    public enum Color
     {
         blau = 1,
         grün = 2,

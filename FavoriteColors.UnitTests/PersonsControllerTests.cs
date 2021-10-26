@@ -58,7 +58,7 @@ namespace FavoriteColors.UnitTests
                 LastName = "Mustermann",
                 ZipCode = 12345,
                 City = "Musterstadt",
-                Color = ColorEnum.blau
+                Color = Color.blau
             };
         }
     }

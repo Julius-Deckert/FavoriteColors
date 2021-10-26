@@ -24,7 +24,7 @@ namespace FavoriteColors.Persistence.Repositories
             return await context.Persons.FindAsync(id);
         }
 
-        public async Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(ColorEnum color)
+        public async Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(Color color)
         {
             var persons = new List<Person>();
 

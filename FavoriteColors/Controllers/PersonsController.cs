@@ -57,7 +57,7 @@ namespace FavoriteColors.Controllers
         [HttpGet("/color/{color}")]
         [ProducesResponseType(typeof(Person), 200)]
         [ProducesResponseType(typeof(Person), 404)]
-        public async Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(ColorEnum color)
+        public async Task<ActionResult<IEnumerable<Person>>> GetByColorAsync(Color color)
         {
             var persons = await personService.GetByColorAsync(color);
 

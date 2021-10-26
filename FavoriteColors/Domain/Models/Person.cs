@@ -19,7 +19,7 @@ namespace FavoriteColors.Domain.Models
             Name = data[2];
             ZipCode = Convert.ToInt32(data[3]);
             City = data[4];
-            var color = (ColorEnum)Convert.ToInt32(data[5]);
+            var color = (Color)Convert.ToInt32(data[5]);
             Color = color.ToString();
         }
 

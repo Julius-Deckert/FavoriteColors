@@ -22,7 +22,7 @@ namespace FavoriteColors.Resources
         public string City { get; set; }
 
         [Required]
-        [EnumDataType(typeof(ColorEnum))]
+        [EnumDataType(typeof(Color))]
         public string Color { get; set; }
     }
 }
