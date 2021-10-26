@@ -33,7 +33,6 @@ namespace FavoriteColors.Domain.Models
         public string Name { get; set; }
 
         [Required]
-        [MaxLength(5)]
         public int ZipCode { get; set; }
 
         [Required]
