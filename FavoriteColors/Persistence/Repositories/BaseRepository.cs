@@ -10,5 +10,9 @@ namespace FavoriteColors.Persistence.Repositories
         {
             Context = context;
         }
+
+        protected BaseRepository()
+        {
+        }
     }
 }
