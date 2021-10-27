@@ -15,13 +15,10 @@ namespace FavoriteColors.Repositories
         */
         private readonly Regex _regex = new(@"[a-zA-Z\s]+, [a-zA-Z\s]+, [0-9]+, [a-zA-Z\s]+, [0-9]{1}", RegexOptions.IgnoreCase);
         private readonly List<Person> _persons = new();
-        private readonly ILogger<PersonRepository> _logger;
 
-        public PersonRepository(ILogger<PersonRepository> logger)
+        public PersonRepository()
         {
             var rows = ReadCsvFile(@"sample-input.csv", _regex);
-
-            _logger = logger;
 
             CreatePersonListFromFileData(rows);
         }
@@ -70,8 +67,6 @@ namespace FavoriteColors.Repositories
                  */
                 if (!regex.IsMatch(row))
                 {
-                    _logger.LogInformation($"The personal information '{row}' does not match the given convensions. " +
-                        $"Therefore this personal information is classifed as invalid and isn't considered for further processing.");
                     continue;
                 }
 
