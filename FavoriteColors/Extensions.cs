@@ -1,6 +1,5 @@
-﻿using System;
-using FavoriteColors.Domain.Models;
-using FavoriteColors.Dtos;
+﻿using FavoriteColors.Dtos;
+using FavoriteColors.Models;
 
 namespace FavoriteColors
 {

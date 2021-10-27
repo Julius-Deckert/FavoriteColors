@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FavoriteColors.Domain.Models;
-using FavoriteColors.Domain.Repositories;
-using FavoriteColors.Domain.Services.Communication;
 using FavoriteColors.Dtos;
+using FavoriteColors.Models;
+using FavoriteColors.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FavoriteColors.Controllers
 {
-    [Route("/api/persons")]
+    [ApiController]
+    [Route("persons")]
     public class PersonsController : Controller
     {
         private readonly IPersonRepository _personRepository;
@@ -52,7 +51,7 @@ namespace FavoriteColors.Controllers
                 return BadRequest();
             }
 
-            return Ok(person.AsDto());
+            return person.AsDto();
         }
 
         /// <summary>
@@ -65,11 +64,11 @@ namespace FavoriteColors.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<PersonDto>>> GetByColorAsync(Color color)
         {
-            var persons = await _personRepository.GetByColorAsync(color);
+            var persons = (await _personRepository.GetByColorAsync(color)).Select(person => person.AsDto());
 
             if (persons is null)
             {
-                return BadRequest();
+                return Ok();
             }
 
             return Ok(persons);
@@ -82,7 +81,6 @@ namespace FavoriteColors.Controllers
         /// <returns>Response for the request.</returns>
         [HttpPost]
         [ProducesResponseType(typeof(Person), 201)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> CreatePersonAsync(CreatePersonDto personDto)
         {
             Person person = new()

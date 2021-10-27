@@ -1,36 +1,43 @@
-﻿using FavoriteColors.Domain.Repositories;
-using FavoriteColors.Domain.Services;
-using FavoriteColors.Persistence.Contexts;
-using FavoriteColors.Persistence.Repositories;
-using FavoriteColors.Services;
+﻿using FavoriteColors.Repositories;
+using FavoriteColors.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 
 namespace FavoriteColors
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IPersonService, PersonService>();
+            var mongoDbSettings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
 
-            services.AddControllers();
-
-            services.AddDbContext<AppDbContext>(options => {
-                options.UseInMemoryDatabase("favoritecolors-in-memory");
+            services.AddSingleton<IMongoClient>(serviceProvider =>
+            {
+                return new MongoClient(mongoDbSettings.ConnectionString);
             });
 
-            services.AddScoped<IPersonRepository, PersonRepository>();
-            services.AddScoped<IPersonService, PersonService>();
+            services.AddSingleton<IPersonRepository, PersonRepository>();
 
-            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddControllers(options =>
+            {
+                options.SuppressAsyncSuffixInActionNames = false;
+            });
             services.AddSwaggerGen(c =>
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "FavoriteColors", Version = "v1" })
-            );
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "FavoriteColors", Version = "v1" });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -38,17 +45,12 @@ namespace FavoriteColors
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
-                // Enable middleware to serve generated Swagger as a JSON endpoint.
                 app.UseSwagger();
-
-                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FavoriteColors v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FavoriteColor v1"));
+                app.UseHttpsRedirection();
             }
 
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

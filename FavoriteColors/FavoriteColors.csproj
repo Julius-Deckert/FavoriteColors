@@ -5,8 +5,13 @@
   </PropertyGroup>
 
 
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
   <ItemGroup>
-    <None Remove="Domain\" />
     <None Remove="YServices\" />
     <None Remove="Persistence\" />
     <None Remove="Microsoft.EntityFrameworkCore" />
@@ -15,6 +20,12 @@
     <None Remove="Swashbuckle.AspNetCore" />
     <None Remove="FastMember" />
     <None Remove="Persistence\Context\" />
+    <None Remove="Dto\" />
+    <None Remove="Repositories\" />
+    <None Remove="MongoDB.Driver" />
+    <None Remove="MongoDB.Bson" />
+    <None Remove="Settings\" />
+    <None Remove="Models\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
@@ -25,8 +36,13 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.11" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="FastMember" Version="1.5.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.13.2" />
+    <PackageReference Include="MongoDB.Bson" Version="2.13.2" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Persistence\Contexts\" />
+    <Folder Include="Dtos\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="Settings\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>
