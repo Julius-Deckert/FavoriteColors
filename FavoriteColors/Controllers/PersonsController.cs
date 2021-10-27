@@ -77,7 +77,7 @@ namespace FavoriteColors.Controllers
         /// <summary>
         ///     Create a new person.
         /// </summary>
-        /// <param name="person">Data of new person.</param>
+        /// <param name="personDto">Data of new person.</param>
         /// <returns>Response for the request.</returns>
         [HttpPost]
         [ProducesResponseType(typeof(Person), 201)]

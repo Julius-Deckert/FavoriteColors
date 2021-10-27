@@ -14,38 +14,38 @@ namespace FavoriteColors.Repositories
         * to cover cases like double first and last names or special city names.
         */
         private readonly Regex _regex = new(@"[a-zA-Z\s]+, [a-zA-Z\s]+, [0-9]+, [a-zA-Z\s]+, [0-9]{1}", RegexOptions.IgnoreCase);
-        private readonly List<Person> persons = new();
-        private readonly ILogger<PersonRepository> logger;
+        private readonly List<Person> _persons = new();
+        private readonly ILogger<PersonRepository> _logger;
 
         public PersonRepository(ILogger<PersonRepository> logger)
         {
             var rows = ReadCsvFile(@"sample-input.csv", _regex);
 
-            this.logger = logger;
+            _logger = logger;
 
             CreatePersonListFromFileData(rows);
         }
 
         public async Task<IEnumerable<Person>> GetAllAsync()
         {
-            return await Task.FromResult(persons);
+            return await Task.FromResult(_persons);
         }
 
         public async Task<Person> GetByIdAsync(int id)
         {
-            var item = persons.Where(item => item.Id == id).SingleOrDefault();
+            var item = _persons.SingleOrDefault(item => item.Id == id);
             return await Task.FromResult(item);
         }
 
         public async Task<IEnumerable<Person>> GetByColorAsync(Color color)
         {
-            var personsByColor = persons.Where(item => item.Color == color.ToString()).ToList();
+            var personsByColor = _persons.Where(item => item.Color == color.ToString()).ToList();
             return await Task.FromResult(personsByColor);
         }
 
         public async Task CreateAsync(Person person)
         {
-            persons.Add(person);
+            _persons.Add(person);
             await Task.CompletedTask;
         }
 
@@ -70,7 +70,7 @@ namespace FavoriteColors.Repositories
                  */
                 if (!regex.IsMatch(row))
                 {
-                    logger.LogInformation($"The personal information '{row}' does not match the given convensions. " +
+                    _logger.LogInformation($"The personal information '{row}' does not match the given convensions. " +
                         $"Therefore this personal information is classifed as invalid and isn't considered for further processing.");
                     continue;
                 }
@@ -92,7 +92,7 @@ namespace FavoriteColors.Repositories
         {
             foreach (var row in fileData)
             {
-                persons.Add(new Person(row));
+                _persons.Add(new Person(row));
             }
         }
     }

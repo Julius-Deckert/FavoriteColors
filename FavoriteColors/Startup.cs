@@ -17,16 +17,13 @@ namespace FavoriteColors
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             var mongoDbSettings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
 
-            services.AddSingleton<IMongoClient>(serviceProvider =>
-            {
-                return new MongoClient(mongoDbSettings.ConnectionString);
-            });
+            services.AddSingleton<IMongoClient>(_ => new MongoClient(mongoDbSettings.ConnectionString));
 
             services.AddSingleton<IPersonRepository, PersonRepository>();
 
