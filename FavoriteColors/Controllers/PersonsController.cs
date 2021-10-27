@@ -6,6 +6,7 @@ using FavoriteColors.Domain.Models;
 using FavoriteColors.Domain.Repositories;
 using FavoriteColors.Domain.Services.Communication;
 using FavoriteColors.Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FavoriteColors.Controllers
@@ -25,7 +26,7 @@ namespace FavoriteColors.Controllers
         /// </summary>
         /// <returns>List of persons.</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Person>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<PersonDto>), 200)]
         public async Task<IEnumerable<PersonDto>> GetAllAsync()
         {
             var persons = (await _personRepository.GetAllAsync())
@@ -40,15 +41,15 @@ namespace FavoriteColors.Controllers
         /// <param name="id">Id of the person.</param>
         /// <returns>A specific person.</returns>
         [HttpGet("{id:int}")]
-        [ProducesResponseType(typeof(Person), 200)]
-        [ProducesResponseType(typeof(Person), 404)]
+        [ProducesResponseType(typeof(PersonDto), 200)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<PersonDto>> GetByIdAsync(int id)
         {
             var person = await _personRepository.GetByIdAsync(id);
 
             if (person is null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             return Ok(person.AsDto());
@@ -60,15 +61,15 @@ namespace FavoriteColors.Controllers
         /// <param name="color">The favorite color of the persons.</param>
         /// <returns>List of persons.</returns>
         [HttpGet("/color/{color}")]
-        [ProducesResponseType(typeof(Person), 200)]
-        [ProducesResponseType(typeof(Person), 404)]
+        [ProducesResponseType(typeof(IEnumerable<PersonDto>), 200)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<PersonDto>>> GetByColorAsync(Color color)
         {
             var persons = await _personRepository.GetByColorAsync(color);
 
             if (persons is null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             return Ok(persons);
@@ -81,8 +82,8 @@ namespace FavoriteColors.Controllers
         /// <returns>Response for the request.</returns>
         [HttpPost]
         [ProducesResponseType(typeof(Person), 201)]
-        [ProducesResponseType(typeof(BaseResponse), 400)]
-        public async Task<ActionResult<PersonDto>> CreatePersonAsync(CreatePersonDto personDto)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> CreatePersonAsync(CreatePersonDto personDto)
         {
             Person person = new()
             {
