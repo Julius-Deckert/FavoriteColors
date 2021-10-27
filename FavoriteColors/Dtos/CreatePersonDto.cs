@@ -4,6 +4,10 @@ namespace FavoriteColors.Dtos
 {
     public class CreatePersonDto
     {
+        public CreatePersonDto()
+        {
+        }
+
         public CreatePersonDto(int id, string lastName, string name, int zipCode, string city, string color)
         {
             Id = id;
