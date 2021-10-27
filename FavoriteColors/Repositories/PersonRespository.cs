@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FavoriteColors.Models;
+using Microsoft.Extensions.Logging;
 
 namespace FavoriteColors.Repositories
 {
@@ -14,10 +15,13 @@ namespace FavoriteColors.Repositories
         */
         private readonly Regex _regex = new(@"[a-zA-Z\s]+, [a-zA-Z\s]+, [0-9]+, [a-zA-Z\s]+, [0-9]{1}", RegexOptions.IgnoreCase);
         private readonly List<Person> persons = new();
+        private readonly ILogger<PersonRepository> logger;
 
-        public PersonRepository()
+        public PersonRepository(ILogger<PersonRepository> logger)
         {
             var rows = ReadCsvFile(@"sample-input.csv", _regex);
+
+            this.logger = logger;
 
             CreatePersonListFromFileData(rows);
         }
@@ -45,7 +49,7 @@ namespace FavoriteColors.Repositories
             await Task.CompletedTask;
         }
 
-        private static IEnumerable<string> ReadCsvFile(string filePath, Regex regex)
+        private IEnumerable<string> ReadCsvFile(string filePath, Regex regex)
         {
             var personsList = new List<string>();
 
@@ -66,7 +70,8 @@ namespace FavoriteColors.Repositories
                  */
                 if (!regex.IsMatch(row))
                 {
-
+                    logger.LogInformation($"The personal information '{row}' does not match the given convensions. " +
+                        $"Therefore this personal information is classifed as invalid and isn't considered for further processing.");
                     continue;
                 }
 
