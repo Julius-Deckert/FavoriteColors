@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FavoriteColors.Controllers;
-using FavoriteColors.Domain.Models;
 using FavoriteColors.Dtos;
-using FavoriteColors.Persistence.Repositories;
+using FavoriteColors.Models;
+using FavoriteColors.Repositories;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -15,10 +16,28 @@ namespace FavoriteColors.UnitTests
     {
         private readonly Random rand = new();
         private readonly Array colors = Enum.GetValues(typeof(Color));
-        private readonly Mock<PersonRepository> repoMock = new();
+        private readonly Mock<IPersonRepository> repoMock = new();
 
         [Fact]
-        public async Task GetItemAsync_WithUnexistingItem_ReturnsNotFound()
+        public async Task GetAllAsync_WithExistingPersons_ReturnsAllIPersons()
+        {
+            // Arrange
+            var expectedPersons = new[] { CreateRandomPerson(), CreateRandomPerson(), CreateRandomPerson() };
+
+            repoMock.Setup(repo => repo.GetAllAsync())
+                .ReturnsAsync(expectedPersons);
+
+            var controller = new PersonsController(repoMock.Object);
+
+            // Act
+            var actualPersons = await controller.GetAllAsync();
+
+            // Assert
+            actualPersons.Should().BeEquivalentTo(expectedPersons);
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_WithUnexistingPerson_ReturnsNotFound()
         {
             // Arrange
             repoMock.Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
@@ -30,50 +49,89 @@ namespace FavoriteColors.UnitTests
             var result = await controller.GetByIdAsync(rand.Next());
 
             // Assert
-            result.Result.Should().BeOfType<NotFoundResult>();
+            result.Result.Should().BeOfType<BadRequestResult>();
         }
 
         [Fact]
-        public async Task GetItemAsync_WithExistingItem_ReturnsExpectedItem()
+        public async Task GetByIdAsync_WithExistingPerson_ReturnsExpectedPerson()
         {
             // Arrange
-            var expectedItem = CreateRandomPerson();
+            var expectedPerson = CreateRandomPerson();
 
             repoMock.Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(expectedItem);
+                .ReturnsAsync(expectedPerson);
 
             var controller = new PersonsController(repoMock.Object);
 
             // Act
-            var result = await controller.GetByIdAsync(expectedItem.Id);
+            var result = await controller.GetByIdAsync(expectedPerson.Id);
 
             // Assert
-            result.Value.Should().BeEquivalentTo(expectedItem);
+            result.Value.Should().BeEquivalentTo(expectedPerson);
         }
 
         [Fact]
-        public async Task GetItemsAsync_WithExistingItems_ReturnsAllItems()
+        public async Task GetByColorAsync_WithNonMatchingPersons_ReturnsNothing()
         {
             // Arrange
-            var expectedItems = new[] { CreateRandomPerson(), CreateRandomPerson(), CreateRandomPerson() };
+            List<Person> personList = new();
+            var nonMatchingPerson = new Person()
+            {
+                Id = rand.Next(),
+                Name = GenerateRandomString(8),
+                LastName = GenerateRandomString(8),
+                ZipCode = rand.Next(11111, 99999),
+                City = GenerateRandomString(8),
+                Color = Color.blau.ToString()
+            };
+            personList.Add(nonMatchingPerson);
 
-            repoMock.Setup(repo => repo.GetAllAsync())
-                .ReturnsAsync(expectedItems);
+            repoMock.Setup(repo => repo.GetByColorAsync(It.IsAny<Color>()))
+                .ReturnsAsync(personList);
 
             var controller = new PersonsController(repoMock.Object);
 
             // Act
-            var actualItems = await controller.GetAllAsync();
+            var result = await controller.GetByColorAsync(Color.violett);
 
             // Assert
-            actualItems.Should().BeEquivalentTo(expectedItems);
+            result.Value.Should().BeNull();
+            result.Result.Should().BeOfType<OkObjectResult>();
         }
 
         [Fact]
-        public async Task CreateItemAsync_WithItemToCreate_ReturnsCreatedItem()
+        public async Task GetByColorAsync_WithMatchingPerson_ReturnsExpectedPersons()
         {
             // Arrange
-            var itemToCreate = new CreatePersonDto(
+            List<Person> personList = new();
+            var matchingPerson = new Person()
+            {
+                Id = rand.Next(),
+                Name = GenerateRandomString(8),
+                LastName = GenerateRandomString(8),
+                ZipCode = rand.Next(11111, 99999),
+                City = GenerateRandomString(8),
+                Color = Color.blau.ToString()
+            };
+            personList.Add(matchingPerson);
+
+            repoMock.Setup(repo => repo.GetByColorAsync(It.IsAny<Color>()))
+                .ReturnsAsync(personList);
+
+            var controller = new PersonsController(repoMock.Object);
+
+            // Act
+            var result = await controller.GetByColorAsync(Color.blau);
+
+            // Assert
+            result.Result.Should().BeOfType<OkObjectResult>();
+        }
+
+        [Fact]
+        public async Task CreatePersonAsync_WithPersonToCreate_ReturnsCreatedPerson()
+        {
+            // Arrange
+            var personToCreate = new CreatePersonDto(
                 rand.Next(),
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
@@ -84,12 +142,12 @@ namespace FavoriteColors.UnitTests
             var controller = new PersonsController(repoMock.Object);
 
             // Act
-            var result = await controller.CreatePersonAsync(itemToCreate);
+            var result = await controller.CreatePersonAsync(personToCreate);
 
             // Assert
-            var createdItem = (result.Result as CreatedAtActionResult).Value as PersonDto;
-            itemToCreate.Should().BeEquivalentTo(
-                createdItem,
+            var createdPerson = (result as CreatedAtActionResult).Value as PersonDto;
+            personToCreate.Should().BeEquivalentTo(
+                createdPerson,
                 options => options.ComparingByMembers<PersonDto>().ExcludingMissingMembers()
             );
         }
@@ -101,7 +159,7 @@ namespace FavoriteColors.UnitTests
                 Id = rand.Next(),
                 Name = GenerateRandomString(8),
                 LastName = GenerateRandomString(8),
-                ZipCode = 12345,
+                ZipCode = rand.Next(11111, 99999),
                 City = GenerateRandomString(8),
                 Color = colors.GetValue(rand.Next(colors.Length)).ToString()
             };
