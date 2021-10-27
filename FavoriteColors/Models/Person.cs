@@ -1,7 +1,6 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace FavoriteColors.Domain.Models
+namespace FavoriteColors.Models
 {
     public class Person
     {
@@ -23,16 +22,34 @@ namespace FavoriteColors.Domain.Models
             Color = color.ToString();
         }
 
+        /// <summary>
+        ///     Gets or sets the Id.
+        /// </summary>
         public int Id { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the last name.
+        /// </summary>
         public string LastName { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the name.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the zip code.
+        /// </summary>
         public int ZipCode { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the city.
+        /// </summary>
         public string City { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the favorite color.
+        /// </summary>
         public string Color { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace FavoriteColors.Domain.Models
+﻿namespace FavoriteColors.Models
 {
     public enum Color
     {
