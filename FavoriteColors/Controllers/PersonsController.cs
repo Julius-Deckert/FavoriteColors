@@ -80,7 +80,9 @@ namespace FavoriteColors.Controllers
         /// <param name="personDto">Data of new person.</param>
         /// <returns>Response for the request.</returns>
         [HttpPost]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(Person), 201)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreatePersonAsync(CreatePersonDto personDto)
         {
             Person person = new()
@@ -93,9 +95,18 @@ namespace FavoriteColors.Controllers
                 Color = personDto.Color
             };
 
-            await _personRepository.CreateAsync(person);
+            var get = await GetByIdAsync(personDto.Id);
 
-            return CreatedAtAction(nameof(GetByIdAsync), new { id = person.Id }, person.AsDto());
+            if (get.Result.GetType() == typeof(BadRequestResult))
+            {
+                await _personRepository.CreateAsync(person);
+
+                return CreatedAtAction(nameof(GetByIdAsync), new { id = person.Id }, person.AsDto());
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }
