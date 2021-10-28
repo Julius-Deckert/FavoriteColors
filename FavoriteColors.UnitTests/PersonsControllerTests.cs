@@ -37,7 +37,7 @@ namespace FavoriteColors.UnitTests
         }
 
         [Fact]
-        public async Task GetByIdAsync_WithUnexistingPerson_ReturnsNotFound()
+        public async Task GetByIdAsync_WithUnexistingPerson_ReturnsBadRequest()
         {
             // Arrange
             repoMock.Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
@@ -150,6 +150,32 @@ namespace FavoriteColors.UnitTests
                 createdPerson,
                 options => options.ComparingByMembers<PersonDto>().ExcludingMissingMembers()
             );
+        }
+
+        [Fact]
+        public async Task CreatePersonAsync_WithExistingId_ReturnsBadRequest()
+        {
+            // Arrange
+            var existingPerson = CreateRandomPerson();
+
+            var personToCreate = new CreatePersonDto(
+                existingPerson.Id,
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString(),
+                rand.Next(),
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString());
+
+            var controller = new PersonsController(repoMock.Object);
+
+            repoMock.Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(existingPerson);
+
+            // Act
+            var result = await controller.CreatePersonAsync(personToCreate);
+
+            // Assert
+            result.Should().BeOfType<BadRequestResult>();
         }
 
         private Person CreateRandomPerson()
