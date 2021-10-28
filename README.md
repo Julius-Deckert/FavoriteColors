@@ -5,7 +5,7 @@ Wie gefordert wurde die .csv-Datei nicht verändert.
 * Die drei geforderten GET- sowie POST-Anfragemethoden wurden implementiert. Demenstrechend wurden Unit Tests erstellt welche die möglichen Http-Antworten testen.
 * Eine weiter Datenquelle in Form der MongoDb wurde zusätzlich angebunden.
 
-## !!! Schwachstelle der aktuellen Implementierung !!!
+## Schwachstelle der aktuellen Implementierung !
 
-Die Vergabe der Ids wird über Integer geregelt (durch Vorgabe in der Aufgabe). Die kann jedoch dazu führen, dass Personen mit der selben Id erstellt werden. Um dies zu verhindern könnte man zukünftig die Vergabe der Ids per Guids lösen.
+Die Vergabe der Ids wird über Integer geregelt (durch Vorgabe in der Aufgabe). Bei der POST-Operation wird aktuell deshalb noch geprüft ob diese Id bereits existiert. Diese Prüfung könnte man in Zukunft durch die Verwendung von Guids für Personen obsolet machen.
 
