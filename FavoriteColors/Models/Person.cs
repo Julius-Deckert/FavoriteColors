@@ -2,6 +2,9 @@
 
 namespace FavoriteColors.Models
 {
+    /// <summary>
+    ///     Implementation of the person class which represents a person.
+    /// </summary>
     public class Person
     {
         public Person()

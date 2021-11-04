@@ -49,7 +49,7 @@ namespace FavoriteColors.UnitTests
             var result = await controller.GetByIdAsync(rand.Next());
 
             // Assert
-            result.Result.Should().BeOfType<BadRequestResult>();
+            result.Result.Should().BeOfType<NotFoundResult>();
         }
 
         [Fact]
@@ -175,7 +175,7 @@ namespace FavoriteColors.UnitTests
             var result = await controller.CreatePersonAsync(personToCreate);
 
             // Assert
-            result.Should().BeOfType<BadRequestResult>();
+            result.Should().BeOfType<BadRequestObjectResult>();
         }
 
         private Person CreateRandomPerson()

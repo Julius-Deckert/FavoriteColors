@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FavoriteColors.Controllers
 {
+    /// <summary>
+    ///     Implementation of the controller class which handles all requests send to the API.
+    /// </summary>
     [ApiController]
     [Route("persons")]
     public class PersonsController : Controller
@@ -41,14 +44,14 @@ namespace FavoriteColors.Controllers
         /// <returns>A specific person.</returns>
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(PersonDto), 200)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<PersonDto>> GetByIdAsync(int id)
         {
             var person = await _personRepository.GetByIdAsync(id);
 
             if (person is null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             return person.AsDto();
@@ -61,7 +64,6 @@ namespace FavoriteColors.Controllers
         /// <returns>List of persons.</returns>
         [HttpGet("/color/{color}")]
         [ProducesResponseType(typeof(IEnumerable<PersonDto>), 200)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<PersonDto>>> GetByColorAsync(Color color)
         {
             var persons = (await _personRepository.GetByColorAsync(color)).Select(person => person.AsDto());
@@ -80,7 +82,6 @@ namespace FavoriteColors.Controllers
         /// <param name="personDto">Data of new person.</param>
         /// <returns>Response for the request.</returns>
         [HttpPost]
-        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(Person), 201)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreatePersonAsync(CreatePersonDto personDto)
@@ -97,7 +98,7 @@ namespace FavoriteColors.Controllers
 
             var get = await GetByIdAsync(personDto.Id);
 
-            if (get.Result.GetType() == typeof(BadRequestResult))
+            if (get.Result is not null && get.Result.GetType() == typeof(NotFoundResult))
             {
                 await _personRepository.CreateAsync(person);
 
@@ -105,7 +106,7 @@ namespace FavoriteColors.Controllers
             }
             else
             {
-                return BadRequest();
+                return BadRequest($"A person with the Id {personDto.Id} already exists!");
             }
         }
     }

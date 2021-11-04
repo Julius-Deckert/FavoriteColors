@@ -3,10 +3,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FavoriteColors.Models;
-using Microsoft.Extensions.Logging;
 
 namespace FavoriteColors.Repositories
 {
+    /// <summary>
+    ///     Implementation of the repository class which is respnsible for persons storage operations.
+    /// </summary>
     public class PersonRepository : IPersonRepository
     {
         /*
@@ -30,13 +32,13 @@ namespace FavoriteColors.Repositories
 
         public async Task<Person> GetByIdAsync(int id)
         {
-            var item = _persons.SingleOrDefault(item => item.Id == id);
-            return await Task.FromResult(item);
+            var person = _persons.SingleOrDefault(person => person.Id == id);
+            return await Task.FromResult(person);
         }
 
         public async Task<IEnumerable<Person>> GetByColorAsync(Color color)
         {
-            var personsByColor = _persons.Where(item => item.Color == color.ToString()).ToList();
+            var personsByColor = _persons.Where(person => person.Color == color.ToString()).ToList();
             return await Task.FromResult(personsByColor);
         }
 
